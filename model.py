@@ -17,28 +17,30 @@ label_map = {
 
 def action_prediction(code_snippet, user_behavior, clipboard_content):
 
-    if code_snippet == '':
-        return 'save'
+    #if user_behavior == 'select_blank' or code_snippet == '':
+        #return 'save'
 
-    # 如果剪貼簿有內容，將預測行為設為 paste
-    if clipboard_content and user_behavior == 'select_blank':
+    if user_behavior == 'copy' and clipboard_content:
         return 'paste'
+
+    if user_behavior == 'select' and code_snippet != '':
+        # 將代碼片段和用戶行為拼接為一個輸入
+        input_text = f"{code_snippet} {user_behavior}"
+        
+        # 將文本轉換為模型可以接受的格式
+        inputs = tokenizer(input_text, return_tensors='pt')
+
+        # 進行預測
+        with torch.no_grad():
+            outputs = model(**inputs)
+
+        # 獲取預測的標籤
+        predicted_class = outputs.logits.argmax().item()
+
+        # 返回模型判斷的行為
+        return label_map[predicted_class]
     
     if user_behavior == 'delete':
         return 'undo'
-    
-    # 將代碼片段和用戶行為拼接為一個輸入
-    input_text = f"{code_snippet} {user_behavior}"
-    
-    # 將文本轉換為模型可以接受的格式
-    inputs = tokenizer(input_text, return_tensors='pt')
 
-    # 進行預測
-    with torch.no_grad():
-        outputs = model(**inputs)
-    
-    # 獲取預測的標籤
-    predicted_class = outputs.logits.argmax().item()
-    
-    # 返回對應的行為
-    return label_map[predicted_class]
+    return 'save'
