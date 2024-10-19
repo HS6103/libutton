@@ -4,6 +4,7 @@ import time
 import pyautogui as pya
 from pynput import mouse
 from model import action_prediction
+from suggestion_window import SuggestionsWindow
 
 dragging = False
 has_moved = False
@@ -12,9 +13,14 @@ selected_code_snippet = ""
 clipboard = ""
 activation = False
 code_selected = False  # New flag to track if code has been selected
+mouse_x = 0
+mouse_y = 0
+last_move_time = time.time()
+suggested_action = ""
+
 
 def get_user_behavior():
-    global last_action, clipboard, activation, code_selected
+    global last_action, clipboard, activation, code_selected, suggested_action
 
     keyboard.hook(on_key_event)
 
@@ -22,11 +28,25 @@ def get_user_behavior():
     listener = mouse.Listener(on_move=on_move, on_click=on_click)
     listener.start()
 
+    # 初始化Tkinter視窗
+    window = SuggestionsWindow()
+    window.update_window_position(mouse_x, mouse_y)
+    window.update_label("Suggested action: None")
+
     # Loop to suggest actions
     while True:
         if code_selected or last_action:
             suggested_action = action_prediction(selected_code_snippet, last_action, clipboard)
             print("Suggested action: ", suggested_action)
+            
+        if (time.time() - last_move_time) > 0.2:            
+            # 更新Tkinter標籤的文字內容
+            window.update_label(f"Suggested action: {suggested_action}")
+            window.update_window_position(mouse_x, mouse_y)  # 每次滑鼠移動時更新視窗位置
+            window.show()
+        else:
+            window.hide()
+            
         if activation:
             activate(suggested_action)
             print(f"Activated {suggested_action}")
@@ -40,7 +60,7 @@ def get_user_behavior():
         last_action = ""
         clipboard = ""
         code_selected = False
-        time.sleep(1)
+        time.sleep(0.2)
 
 def activate(suggested_action):
     # Activate the suggested action
@@ -74,9 +94,12 @@ def store_selected_code():
         last_action = 'select_blank'
 
 def on_move(x, y):
-    global has_moved
+    global has_moved, mouse_x, mouse_y, last_move_time
     if dragging:
         has_moved = True
+    mouse_x = x
+    mouse_y = y
+    last_move_time = time.time()
 
 def on_click(x, y, button, pressed):
     global dragging, has_moved,activation
