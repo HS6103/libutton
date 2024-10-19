@@ -40,5 +40,5 @@ One-handed freedom, LIButton.
 
 + [蕭煦宸](https://github.com/HS6103)
 + [劉思予](https://github.com/rebecca-liu-siyu)
-+ [林鈺誠](https://github.com/robertbigabu)
-+ [林辰翰](https://github.com/vitolin0416)
++ [林鈺誠](https://github.com/vitolin0416)
++ [林辰翰](https://github.com/robertbigabu)
