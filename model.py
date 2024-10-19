@@ -15,13 +15,15 @@ label_map = {
     5: 'comment'
 }
 
+previous_clipboard = ""
+
 def action_prediction(code_snippet, user_behavior, clipboard_content):
+    global previous_clipboard
 
-    #if user_behavior == 'select_blank' or code_snippet == '':
-        #return 'save'
-
-    if user_behavior == 'copy' and clipboard_content:
-        return 'paste'
+    if clipboard_content:
+        if user_behavior == 'copy' or previous_clipboard != clipboard_content:
+            previous_clipboard = clipboard_content
+            return 'paste'
 
     if user_behavior == 'select' and code_snippet != '':
         # 將代碼片段和用戶行為拼接為一個輸入

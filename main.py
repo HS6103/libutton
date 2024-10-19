@@ -37,7 +37,8 @@ def get_user_behavior():
     while True:
         if code_selected or last_action:
             suggested_action = action_prediction(selected_code_snippet, last_action, clipboard)
-            print("Suggested action: ", suggested_action)
+            #print("Suggested action: ", suggested_action)
+            time.sleep(0.1)
             
         if (time.time() - last_move_time) > 0.2:            
             # 更新Tkinter標籤的文字內容
@@ -54,6 +55,7 @@ def get_user_behavior():
             code_selected = False  # Reset after activation
             activation = False  # Reset activation
             code_selected = False  # Reset after act
+            time.sleep(0.1)
             
 
         # Reset values
@@ -121,6 +123,9 @@ def set_last_action(action):
     global last_action, clipboard
     last_action = action
 
+    if action == 'copy':
+        clipboard = pyperclip.paste()
+        time.sleep(0.1)
     if action == 'paste':
         clipboard = ''
 
