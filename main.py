@@ -24,7 +24,8 @@ def get_user_behavior():
     # 開始捕捉滑鼠事件
     listener = mouse.Listener(on_move=on_move, on_click=on_click)
     listener.start()
-    
+
+    # 初始化Tkinter視窗
     window = SuggestionsWindow()
     window.update_window_position(mouse_x, mouse_y)
     window.update_label("Suggested action: None")
@@ -110,7 +111,9 @@ def on_key_event(event):
     else:
         last_action = 'other'
 
-keyboard.hook(on_key_event)
+if __name__ == "__main__":
 
-get_user_behavior()
+    keyboard.hook(on_key_event )
+
+    get_user_behavior()
 

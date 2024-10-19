@@ -32,4 +32,11 @@ class SuggestionsWindow:
     
     def kill(self):
         self.root.destroy()
-        
+
+
+if __name__ == "__main__":
+    window = SuggestionsWindow()
+    window.update_label("Suggested action: None")
+    window.update_window_position(1, 1)
+    time.sleep(3)
+    window.kill()
