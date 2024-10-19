@@ -10,7 +10,7 @@ One-handed freedom, LIButton.
 
 ## 使用說明 Instructions
 
-1. 在主程式目錄中打開終端，執行以下指令安裝依賴套件 / To install dependencies, open the terminal under LIButton and run the following command：
+1. 在主程式目錄中打開終端，執行以下指令安裝所需套件 / Open the terminal under LIButton and run：
    ```bash
    pip install -r requirements.txt
    ```
