@@ -6,14 +6,13 @@ class SuggestionsWindow:
         self.root = tk.Tk()
         self.root.title("Suggested Action")
         self.root.geometry("150x100")
-        self.root.resizable(False, False)  # Prevent the window from resizing
         self.root.overrideredirect(True)  # 去掉邊框
         self.root.attributes('-topmost', True)  # 視窗永遠保持在最上層
         self.root.withdraw() # 先隱藏
         self.root.config(bg='black')
         self.root.attributes('-transparentcolor', 'black')  # 設置透明背景
         # 創建一個標籤來顯示Suggested Action
-        self.label = tk.Label(self.root, text="Waiting for action...", font=("Arial", 12))
+        self.label = tk.Label(self.root, text="Waiting for action...", font=("Arial", 8))
         self.label.pack(pady=20)
 
     def update_label(self, input_text):
@@ -21,8 +20,8 @@ class SuggestionsWindow:
         self.root.update()
 
     def update_window_position(self, x, y):
-        offset_x = 5
-        offset_y = 5
+        offset_x = 8
+        offset_y = 2
         self.root.geometry(f"+{x + offset_x}+{y + offset_y}")
         self.root.update()
     
