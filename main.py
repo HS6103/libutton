@@ -5,15 +5,16 @@ import pyautogui as pya
 from pynput import mouse
 from model import action_prediction
 
-last_action = None
 dragging = False
 has_moved = False
-ctrl_pressed = False
+last_action = None
 selected_code_snippet = ""
 clipboard = ""
 
 def get_user_behavior():
     global last_action, clipboard
+
+    keyboard.hook(on_key_event)
 
     # 開始捕捉滑鼠事件
     listener = mouse.Listener(on_move=on_move, on_click=on_click)
@@ -27,25 +28,24 @@ def get_user_behavior():
         print("Suggested action: ", suggested_action)
     
         time.sleep(1)
-        clipboard = ""
 
 def store_selected_code():
-    global last_action, clipboard
+    global last_action, clipboard, selected_code_snippet
+
+    if last_action == 'copy':
+        clipboard = pyperclip.paste()
+
     pya.hotkey('ctrl', 'c')  # 執行複製操作（不影響剪貼簿的原本內容）
     time.sleep(0.1)  # 等待複製完成
 
-    selected_content = pyperclip.paste()
+    selected_code_snippet = pyperclip.paste()
+    pyperclip.copy(clipboard)
+    time.sleep(0.1)
 
-    if last_action == 'copy':
-        clipboard = selected_content
-
-    pyperclip.copy(clipboard) 
-
-    # 檢查內容是否為空白字符
-    if selected_content.strip() == "":
-        return None
-    
-    return selected_content
+    if selected_code_snippet:
+        last_action = 'select'
+    else:
+        last_action = 'select_blank'
 
 def on_move(x, y):
     global has_moved
@@ -60,33 +60,22 @@ def on_click(x, y, button, pressed):
             has_moved = False
         else:
             if dragging and has_moved:
-                selected_content = store_selected_code()  # 儲存選取內容到變數
-                if selected_content:
-                    selected_code_snippet = selected_content  # 更新選取的程式碼
-                    last_action = 'select'
-                else:
-                    last_action = 'select_blank'  # 選取的是空白行
+                store_selected_code()
             dragging = False
             has_moved = False
  
-def on_key_event(event):
-    global last_action, ctrl_pressed, clipboard
-    if event.name == 'backspace':
-        last_action = 'delete'
-    elif event.name == 'ctrl':
-        if event.event_type == 'down':
-            ctrl_pressed = True
-        else:
-            ctrl_pressed = False
-    elif event.name == 'c' and ctrl_pressed:
-        last_action = 'copy'
-    elif event.name == 'v' and ctrl_pressed:
-        last_action = 'paste'
-    elif event.name == 's' and ctrl_pressed:
-        last_action = 'save'
-    else:
-        last_action = 'other'
+def set_last_action(action):
+    global last_action, clipboard
+    last_action = action
 
-keyboard.hook(on_key_event)
+    if(action == 'paste'):
+        clipboard = ''
+
+def on_key_event(event):
+    keyboard.add_hotkey('backspace', lambda: set_last_action('delete'))
+    keyboard.add_hotkey('ctrl+c', lambda: set_last_action('copy'))
+    keyboard.add_hotkey('ctrl+v', lambda: set_last_action('paste'))
+    keyboard.add_hotkey('ctrl+s', lambda: set_last_action('save'))
+
 
 get_user_behavior()
