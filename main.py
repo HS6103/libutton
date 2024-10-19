@@ -3,7 +3,7 @@ import pyperclip
 import time
 import pyautogui as pya
 from pynput import mouse
-from model_test import action_prediction
+from model import action_prediction
 
 last_action = None
 dragging = False
