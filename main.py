@@ -23,6 +23,7 @@ def get_user_behavior():
     listener = mouse.Listener(on_move=on_move, on_click=on_click)
     listener.start()
 
+    # 初始化Tkinter視窗
     window = SuggestionsWindow()
     window.update_label("Suggested action: None")
 
@@ -34,9 +35,11 @@ def get_user_behavior():
             # 更新Tkinter標籤的文字內容
             window.update_label(f"Suggested action: {suggested_action}")
             window.update_window_position(mouse_x, mouse_y)  # 每次滑鼠移動時更新視窗位置
-            
-            time.sleep(1)
+
+            # 每0.1秒檢查一次行為
+            time.sleep(0.1)
             clipboard = ""
+            
         except KeyboardInterrupt:
             print("keyboard interrupt")
             window.kill()
@@ -103,7 +106,9 @@ def on_key_event(event):
     else:
         last_action = 'other'
 
-keyboard.hook(on_key_event)
+if __name__ == "__main__":
 
-get_user_behavior()
+    keyboard.hook(on_key_event )
+
+    get_user_behavior()
 

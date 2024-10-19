@@ -6,6 +6,7 @@ class SuggestionsWindow:
         self.root = tk.Tk()
         self.root.title("Suggested Action")
         self.root.geometry("300x100")
+        self.root.resizable(False, False)  # Prevent the window from resizing
         self.root.overrideredirect(True)  # 去掉邊框
         self.root.attributes('-topmost', True)  # 視窗永遠保持在最上層
         # 創建一個標籤來顯示Suggested Action
@@ -24,4 +25,11 @@ class SuggestionsWindow:
     
     def kill(self):
         self.root.destroy()
-        
+
+
+if __name__ == "__main__":
+    window = SuggestionsWindow()
+    window.update_label("Suggested action: None")
+    window.update_window_position(1, 1)
+    time.sleep(3)
+    window.kill()
