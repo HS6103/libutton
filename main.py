@@ -13,8 +13,10 @@ ctrl_pressed = False
 idle = True
 selected_code_snippet = ""
 clipboard = ""
-mouse_x=0
-mouse_y=0
+mouse_x = 0
+mouse_y = 0
+last_move_time = time.time()
+
     
 def get_user_behavior():
     global last_action, clipboard
@@ -22,21 +24,24 @@ def get_user_behavior():
     # 開始捕捉滑鼠事件
     listener = mouse.Listener(on_move=on_move, on_click=on_click)
     listener.start()
-
+    
     window = SuggestionsWindow()
+    window.update_window_position(mouse_x, mouse_y)
     window.update_label("Suggested action: None")
 
     # 當檢測到行為時，返回選取的程式碼片段和行為
     while True:
         try:
-            suggested_action = action_prediction(selected_code_snippet, last_action, clipboard)
+            if (time.time() - last_move_time) > 0.2:
+                suggested_action = action_prediction(selected_code_snippet, last_action, clipboard)
             
-            # 更新Tkinter標籤的文字內容
-            window.update_label(f"Suggested action: {suggested_action}")
-            window.update_window_position(mouse_x, mouse_y)  # 每次滑鼠移動時更新視窗位置
-            
-            time.sleep(1)
-            clipboard = ""
+                # 更新Tkinter標籤的文字內容
+                window.update_label(f"Suggested action: {suggested_action}")
+                window.update_window_position(mouse_x, mouse_y)  # 每次滑鼠移動時更新視窗位置
+                window.show()
+                clipboard = ""
+            else:
+                window.hide()
         except KeyboardInterrupt:
             print("keyboard interrupt")
             window.kill()
@@ -62,11 +67,13 @@ def store_selected_code():
     return selected_content
 
 def on_move(x, y):
-    global has_moved, mouse_x, mouse_y
+    global has_moved, mouse_x, mouse_y, last_move_time
     if dragging:
         has_moved = True
     mouse_x = x
     mouse_y = y
+    last_move_time = time.time()
+    
 
 def on_click(x, y, button, pressed):
     global dragging, has_moved, last_action, selected_code_snippet

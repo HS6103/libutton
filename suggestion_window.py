@@ -8,6 +8,7 @@ class SuggestionsWindow:
         self.root.geometry("300x100")
         self.root.overrideredirect(True)  # 去掉邊框
         self.root.attributes('-topmost', True)  # 視窗永遠保持在最上層
+        self.root.withdraw() # 先隱藏
         # 創建一個標籤來顯示Suggested Action
         self.label = tk.Label(self.root, text="Waiting for action...", font=("Arial", 12))
         self.label.pack(pady=20)
@@ -21,6 +22,12 @@ class SuggestionsWindow:
         offset_y = 20
         self.root.geometry(f"+{x + offset_x}+{y + offset_y}")
         self.root.update()
+    
+    def show(self):
+        self.root.deiconify()
+    
+    def hide(self):
+        self.root.withdraw()
     
     def kill(self):
         self.root.destroy()
