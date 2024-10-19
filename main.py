@@ -3,8 +3,12 @@ import pyperclip
 import time
 import pyautogui as pya
 from pynput import mouse
+<<<<<<< HEAD
 from model import action_prediction
 import tkinter as tk
+=======
+from model_test import action_prediction
+>>>>>>> parent of 9dbe4b4 (Update main.py)
 
 last_action = None
 dragging = False
