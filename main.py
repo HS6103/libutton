@@ -3,40 +3,15 @@ import pyperclip
 import time
 import pyautogui as pya
 from pynput import mouse
-<<<<<<< HEAD
 from model import action_prediction
-import tkinter as tk
-=======
-from model_test import action_prediction
->>>>>>> parent of 9dbe4b4 (Update main.py)
 
 last_action = None
 dragging = False
 has_moved = False
 ctrl_pressed = False
-idle = True
 selected_code_snippet = ""
 clipboard = ""
-mouse_x=0
-mouse_y=0
 
-# 初始化Tkinter主視窗
-root = tk.Tk()
-root.title("Suggested Action")
-root.geometry("300x100")
-root.overrideredirect(True)  # 去掉邊框
-root.attributes('-topmost', True)  # 視窗永遠保持在最上層
-
-
-# 創建一個標籤來顯示Suggested Action
-label = tk.Label(root, text="Waiting for action...", font=("Arial", 12))
-label.pack(pady=20)
-
-def update_window_position(x, y):
-    offset_x = 20  # X軸偏移，讓視窗不直接覆蓋在滑鼠上
-    offset_y = 20  # Y軸偏移
-    root.geometry(f"+{x + offset_x}+{y + offset_y}")
-    
 def get_user_behavior():
     global last_action, clipboard
 
@@ -47,13 +22,10 @@ def get_user_behavior():
     # 當檢測到行為時，返回選取的程式碼片段和行為
     while True:
         suggested_action = action_prediction(selected_code_snippet, last_action, clipboard)
-        
-        # 更新Tkinter標籤的文字內容
-        label.config(text=f"Suggested action: {suggested_action}")
-        update_window_position(mouse_x, mouse_y)  # 每次滑鼠移動時更新視窗位置
-        # 讓Tkinter主視窗更新
-        root.update()
-        
+        #print(selected_code_snippet)
+        #print(last_action)
+        print("Suggested action: ", suggested_action)
+    
         time.sleep(1)
         clipboard = ""
 
@@ -76,11 +48,9 @@ def store_selected_code():
     return selected_content
 
 def on_move(x, y):
-    global has_moved, mouse_x, mouse_y
+    global has_moved
     if dragging:
         has_moved = True
-    mouse_x = x
-    mouse_y = y
 
 def on_click(x, y, button, pressed):
     global dragging, has_moved, last_action, selected_code_snippet
@@ -120,4 +90,3 @@ def on_key_event(event):
 keyboard.hook(on_key_event)
 
 get_user_behavior()
-
