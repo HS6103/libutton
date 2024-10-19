@@ -10,10 +10,14 @@ One-handed freedom, LIButton.
 
 ## 使用說明 Instructions
 
-1. 啟動 main.py / Run main.py
-2. 切換至您的工作視窗 / Switch to your window
-3. 在工作時，系統會用小視窗提供動作建議 / As you work, suggestions will pop up in small windows
-4. 按下測鍵一鍵執行 / To accept, simply press the sidebutton on your mouse
+1. 在主程式目錄中打開終端，執行以下指令安裝依賴套件 / To install dependencies, open the terminal under LIButton and run the following command：
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. 啟動 main.py / Run main.py
+3. 切換至您的工作視窗 / Switch to your window
+4. 在工作時，系統會用小視窗提供動作建議 / As you work, suggestions will pop up in small windows
+5. 按下測鍵一鍵執行 / To accept, simply press the sidebutton on your mouse
 
 ## 環境 & 使用套件 Environment & Resources Used
 
