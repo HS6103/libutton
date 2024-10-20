@@ -16,7 +16,8 @@ code_selected = False  # New flag to track if code has been selected
 mouse_x = 0
 mouse_y = 0
 last_move_time = time.time()
-suggested_action = ""
+suggested_action = "None"
+start_time = time.time()
 
 
 def get_user_behavior():
@@ -40,7 +41,7 @@ def get_user_behavior():
             #print("Suggested action: ", suggested_action)
             time.sleep(0.1)
 
-        if (time.time() - last_move_time) > 0.2:            
+        if ((time.time() - last_move_time) > 0.2) & ((time.time() - start_time) > 0.5) & (suggested_action != "None"):            
             # 更新Tkinter標籤的文字內容
             window.update_label(suggested_action)
             window.update_window_position(mouse_x, mouse_y)  # 每次滑鼠移動時更新視窗位置

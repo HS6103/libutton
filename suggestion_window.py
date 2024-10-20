@@ -9,7 +9,8 @@ class SuggestionsWindow:
         self.root.overrideredirect(True)  # 去掉邊框
         self.root.attributes('-topmost', True)  # 視窗永遠保持在最上層
         self.root.config(bg='black')  # 設置背景顏色，方便看到透明效果
-        self.root.attributes('-transparentcolor', 'black')  # 設置黑色為透明背景
+        self.root.attributes('-transparentcolor', 'black')  # 設置黑色為透明背景 
+        self.root.withdraw()
         # 創建一個標籤來顯示Suggested Action
         self.label = tk.Label(self.root, text="Waiting for action...", font=("Arial", 8))
         self.label.pack(pady=20)
