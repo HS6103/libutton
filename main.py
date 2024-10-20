@@ -31,7 +31,7 @@ def get_user_behavior():
     # 初始化Tkinter視窗
     window = SuggestionsWindow()
     window.update_window_position(mouse_x, mouse_y)
-    window.update_label("Suggested action: None")
+    window.update_label("")
 
     # Loop to suggest actions
     while True:
@@ -39,10 +39,10 @@ def get_user_behavior():
             suggested_action = action_prediction(selected_code_snippet, last_action, clipboard)
             #print("Suggested action: ", suggested_action)
             time.sleep(0.1)
-            
+
         if (time.time() - last_move_time) > 0.2:            
             # 更新Tkinter標籤的文字內容
-            window.update_label(f"Suggested action: {suggested_action}")
+            window.update_label(suggested_action)
             window.update_window_position(mouse_x, mouse_y)  # 每次滑鼠移動時更新視窗位置
             window.show()
         else:
@@ -60,7 +60,7 @@ def get_user_behavior():
 
         # Reset values
         last_action = ""
-        clipboard = ""
+        clipboard = pyperclip.paste()
         code_selected = False
         time.sleep(0.2)
 

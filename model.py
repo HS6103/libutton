@@ -11,8 +11,7 @@ label_map = {
     1: 'paste',
     2: 'copy',
     3: 'undo',
-    4: 'delete',
-    5: 'comment'
+    4: 'delete'
 }
 
 previous_clipboard = ""
